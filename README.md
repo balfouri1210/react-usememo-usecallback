@@ -1,3 +1,9 @@
+✅ useMemo, useCallback에 대한 개념 숙지 및 실제 적용
+
+✅ React 성능최적화와 Re-rendering에 대한 개념정리
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
