@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 function colorTranslator(color: string) {
   console.log('color Translator');
@@ -32,6 +32,11 @@ function Translator() {
   const [selectedColor, setSelectedColor] = useState('black');
   const [selectedMovie, setSelectedMovie] = useState('harry potter');
 
+  // selectColor와 selectMovie는 selectedColor, selectedMovie를 재할당하는 역할에 변화가 없으므로
+  // useCallback을 통해 첫 마운트에만 메모리에 할당한다. (rerendering 시에는 함수를 새로 선언하지 않음)
+  // 보통 하위컴포넌트에 콜백을 전달할때 많이 사용한다.
+  // 하위컴포넌트는 상위컴포넌트에서 선언된 콜백만을 사용하는데,
+  // 상위컴포넌트의 state가 바뀔때에도 불필요하게 리렌더링 되기 때문.
   function selectColor(event: React.ChangeEvent<HTMLSelectElement>) {
     setSelectedColor(event.target.value);
   }
@@ -49,7 +54,7 @@ function Translator() {
   return (
     <div>
       Translation of
-      <select name="color" value={selectedColor} onChange={selectColor} style={{ marginLeft: '8px' }}>
+      <select name="color" value={selectedColor} onChange={useCallback(selectColor, [])} style={{ marginLeft: '8px' }}>
         {['red', 'blue', 'black'].map((color) => <option
           value={color}
           key={color}>
@@ -62,7 +67,7 @@ function Translator() {
       </div>
 
       Translation of
-      <select name="movie" value={selectedMovie} onChange={selectMovie} style={{ marginLeft: '8px' }}>
+      <select name="movie" value={selectedMovie} onChange={useCallback(selectMovie, [])} style={{ marginLeft: '8px' }}>
         {['harry potter', 'load of the rings', 'fast and furious'].map((movie) => <option
           value={movie}
           key={movie}>
